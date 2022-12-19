@@ -127,12 +127,6 @@ ${content}
      */
     const octokit = github.getOctokit(core.getInput('token'))
 
-    core.info(`GITHUB_EVENT_PATH: ${process.env.GITHUB_EVENT_PATH}`)
-    core.info(`GITHUB_REF: ${process.env.GITHUB_REF}`)
-    core.info(`number: ${github.context.issue.number}`)
-    core.info(`repo: ${github.context.issue.repo}`)
-    core.info(`owner: ${github.context.issue.owner}`)
-
     const pullRequestId = github.context.issue.number
     if (!pullRequestId) {
       core.warning('Cannot find the PR id.')
