@@ -131,10 +131,10 @@ ${content}
     if (!pullRequestId) {
       core.warning('Cannot find the PR id.')
       core.info(message)
-      return 
+      return
     }
 
-    await octokit.issues.createComment({
+    await octokit.rest.issues.createComment({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       issue_number: pullRequestId,
