@@ -1677,6 +1677,10 @@ ${content}
                 core.info(message);
                 return;
             }
+            if (diff.length === 0) {
+                core.info(message);
+                return;
+            }
             yield octokit.rest.issues.createComment({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,

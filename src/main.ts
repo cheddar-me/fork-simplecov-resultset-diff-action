@@ -134,6 +134,11 @@ ${content}
       return
     }
 
+    if (diff.length === 0) {
+      core.info(message)
+      return
+    }
+
     await octokit.rest.issues.createComment({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
