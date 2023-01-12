@@ -70,12 +70,8 @@ function trimWorkspacePath(filename: string): string {
   }
 }
 
-function formatDiff(diff: FileCoverageDiff): [string, string, string] {
-  return [
-    trimWorkspacePath(diff.filename),
-    formatDiffItem(diff.lines),
-    formatDiffItem(diff.branches)
-  ]
+function formatDiff(diff: FileCoverageDiff): [string, string] {
+  return [trimWorkspacePath(diff.filename), formatDiffItem(diff.lines)]
 }
 
 async function run(): Promise<void> {
@@ -109,10 +105,7 @@ async function run(): Promise<void> {
     if (diff.length === 0) {
       content = 'No differences'
     } else {
-      content = markdownTable([
-        ['Filename', 'Lines', 'Branches'],
-        ...diff.map(formatDiff)
-      ])
+      content = markdownTable([['Filename', 'Lines'], ...diff.map(formatDiff)])
     }
 
     const message = `<details>
