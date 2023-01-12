@@ -1625,8 +1625,7 @@ function trimWorkspacePath(filename) {
 function formatDiff(diff) {
     return [
         trimWorkspacePath(diff.filename),
-        formatDiffItem(diff.lines),
-        formatDiffItem(diff.branches)
+        formatDiffItem(diff.lines)
     ];
 }
 function run() {
@@ -1657,7 +1656,7 @@ function run() {
             }
             else {
                 content = markdown_table_1.default([
-                    ['Filename', 'Lines', 'Branches'],
+                    ['Filename', 'Lines'],
                     ...diff.map(formatDiff)
                 ]);
             }
@@ -9784,25 +9783,6 @@ function linesCoverage(coverage) {
     const covered = effectiveLines.filter(hit => hit > 0).length;
     return floor((covered / rows) * 100, 2);
 }
-function branchesCoverages(coverage) {
-    const conditions = Object.keys(coverage);
-    if (conditions.length === 0) {
-        return 100;
-    }
-    let total = 0;
-    let covered = 0;
-    for (const k of conditions) {
-        const cond = coverage[k];
-        for (const branch of Object.keys(cond)) {
-            total += 1;
-            const hit = cond[branch];
-            if (hit > 0) {
-                covered += 1;
-            }
-        }
-    }
-    return floor((covered / total) * 100, 2);
-}
 class Coverage {
     constructor(resultset) {
         const coverages = resultset['Minitest']['coverage'];
@@ -9811,8 +9791,7 @@ class Coverage {
             const coverage = coverages[filename];
             this.files.push({
                 filename,
-                lines: linesCoverage(coverage.lines),
-                branches: branchesCoverages(coverage.branches)
+                lines: linesCoverage(coverage.lines)
             });
         }
     }
@@ -9858,9 +9837,6 @@ function isDifference(cov1, cov2) {
     if (cov1.lines !== cov2.lines) {
         return true;
     }
-    if (cov1.branches !== cov2.branches) {
-        return true;
-    }
     return false;
 }
 function makeDiff(cov1, cov2) {
@@ -9870,21 +9846,18 @@ function makeDiff(cov1, cov2) {
     if (!cov1 && cov2) {
         return {
             filename: cov2.filename,
-            lines: { from: null, to: cov2.lines },
-            branches: { from: null, to: cov2.branches }
+            lines: { from: null, to: cov2.lines }
         };
     }
     if (!cov2 && cov1) {
         return {
             filename: cov1.filename,
-            lines: { from: cov1.lines, to: null },
-            branches: { from: cov1.branches, to: null }
+            lines: { from: cov1.lines, to: null }
         };
     }
     return {
         filename: cov1.filename,
-        lines: { from: cov1.lines, to: cov2.lines },
-        branches: { from: cov1.branches, to: cov2.branches }
+        lines: { from: cov1.lines, to: cov2.lines }
     };
 }
 
